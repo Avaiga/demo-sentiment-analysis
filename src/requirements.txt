@@ -1,0 +1,4 @@
+taipy
+torch
+transformers
+scipy
