@@ -9,15 +9,13 @@
 - [Contributing](#contributing)
 - [Code of conduct](#code-of-conduct)
 
-## Source
 
-The logic and idea, as well as part of the code of this application, come from Sven Bosau. The original code can be found [here](https://github.com/Sven-Bo/streamlit-sentiment-analysis). It was recreated using Taipy.
 
 ## What is demo sentiment analysis
 
-Taipy is a  low-code Python library for creating Business Applications. More information on our [website](https://www.taipy.io).
+Taipy is a low-code Python library for creating Business Applications. More information on our [website](https://www.taipy.io).
 
-[Demo sentiment analysis](https://github.com/Avaiga/demo-sentiment-analysis) 
+[Demo sentiment analysis](https://github.com/Avaiga/demo-sentiment-analysis) is the product of the Getting Started for Taipy GUI. The end result is a two page application that uses a sentiment analysis model to anlize input and entire text. 
 
 
 ### Demo Type
