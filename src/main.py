@@ -144,4 +144,4 @@ pages = {
 }
 
 
-Gui(pages=pages).run()
+Gui(pages=pages).run(title="Sentiment Analysis")
