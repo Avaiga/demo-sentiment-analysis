@@ -1,21 +1,22 @@
+""" Creates a sentiment analysis App using Taipy"""
 from transformers import AutoTokenizer
 from transformers import AutoModelForSequenceClassification
 from scipy.special import softmax
 
 import numpy as np
-import pandas as pd 
+import pandas as pd
 from taipy.gui import Gui, notify
 
 text = "Original text"
 
 page = """
-# Getting started with Taipy GUI
+# Getting started with **Taipy**{: .color-primary} **GUI**{: .color-primary}
 
 <|layout|columns=1 1|
 <|
-My text: <|{text}|>
+**My text:** <|{text}|>
 
-Enter a word:
+**Enter a word:**
 <|{text}|input|>
 <|Analyze|button|on_action=local_callback|>
 |>
@@ -37,34 +38,55 @@ Enter a word:
 <|{dataframe}|chart|type=bar|x=Text|y[1]=Score Pos|y[2]=Score Neu|y[3]=Score Neg|y[4]=Overall|color[1]=green|color[2]=grey|color[3]=red|type[4]=line|>
 """
 
-MODEL = f"cardiffnlp/twitter-roberta-base-sentiment"
+MODEL = "sbcBI/sentiment_analysis_model"
 tokenizer = AutoTokenizer.from_pretrained(MODEL)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL)
 
-dataframe = pd.DataFrame({"Text":[''],
-                          "Score Pos":[0.33],
-                          "Score Neu":[0.33],
-                          "Score Neg":[0.33],
-                          "Overall":[0]})
+dataframe = pd.DataFrame(
+    {
+        "Text": [""],
+        "Score Pos": [0.33],
+        "Score Neu": [0.33],
+        "Score Neg": [0.33],
+        "Overall": [0],
+    }
+)
 
 dataframe2 = dataframe.copy()
 
-def analyze_text(text):
-    # Run for Roberta Model
-    encoded_text = tokenizer(text, return_tensors='pt')
+
+def analyze_text(input_text: str) -> dict:
+    """
+    Runs the sentiment analysis model on the text
+
+    Args:
+        - text (str): text to be analyzed
+
+    Returns:
+        - dict: dictionary with the scores
+    """
+    encoded_text = tokenizer(input_text, return_tensors="pt")
     output = model(**encoded_text)
     scores = output[0][0].detach().numpy()
     scores = softmax(scores)
-    
-    return {"Text":text[:50],
-            "Score Pos":scores[2],
-            "Score Neu":scores[1],
-            "Score Neg":scores[0],
-            "Overall":scores[2]-scores[0]}
+
+    return {
+        "Text": input_text[:50],
+        "Score Pos": scores[2],
+        "Score Neu": scores[1],
+        "Score Neg": scores[0],
+        "Overall": scores[2] - scores[0],
+    }
 
 
-def local_callback(state):
-    notify(state, 'Info', f'The text is: {state.text}', True)
+def local_callback(state) -> None:
+    """
+    Analyze the text and updates the dataframe
+
+    Args:
+        - state: state of the Taipy App
+    """
+    notify(state, "Info", f"The text is: {state.text}", True)
     temp = state.dataframe.copy()
     scores = analyze_text(state.text)
     state.dataframe = temp.append(scores, ignore_index=True)
@@ -89,29 +111,37 @@ page_file = """
 
 """
 
-def analyze_file(state):
+
+def analyze_file(state) -> None:
+    """
+    Analyse the lines in a text file
+
+    Args:
+        - state: state of the Taipy App
+    """
     state.dataframe2 = dataframe2
     state.treatment = 0
-    with open(state.path,"r", encoding='utf-8') as f:
+    with open(state.path, "r", encoding="utf-8") as f:
         data = f.read()
-        
-        # split lines and eliminates duplicates
-        file_list = list(dict.fromkeys(data.replace('\n', ' ').split(".")[:-1]))
-    
-    
-    for i in range(len(file_list)):
-        text = file_list[i]
-        state.treatment = int((i+1)*100/len(file_list))
-        temp = state.dataframe2.copy()
-        scores = analyze_text(text)
-        state.dataframe2 = temp.append(scores, ignore_index=True)
-        
-    state.path = None
-    
+        print(data)
 
-pages = {"/":"<|toggle|theme|>\n<center>\n<|navbar|>\n</center>",
-         "line":page,
-         "text":page_file}
+        file_list = list(data.split("\n"))
+
+    for i, input_text in enumerate(file_list):
+        state.treatment = int((i + 1) * 100 / len(file_list))
+        temp = state.dataframe2.copy()
+        scores = analyze_text(input_text)
+        print(scores)
+        state.dataframe2 = temp.append(scores, ignore_index=True)
+
+    state.path = None
+
+
+pages = {
+    "/": "<|toggle|theme|>\n<center>\n<|navbar|>\n</center>",
+    "line": page,
+    "text": page_file,
+}
 
 
 Gui(pages=pages).run()
