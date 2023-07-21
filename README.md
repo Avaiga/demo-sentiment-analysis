@@ -13,9 +13,11 @@
 
 ## What is demo sentiment analysis
 
-Taipy is a low-code Python library for creating Business Applications. More information on our [website](https://www.taipy.io).
+Taipy is a low-code Python library for creating Business Applications— more information on our [website](https://www.taipy.io).
 
-[Demo sentiment analysis](https://github.com/Avaiga/demo-sentiment-analysis) is the product of the Getting Started for Taipy GUI. The end result is a two page application that uses a sentiment analysis model to anlize input and entire text. 
+[Demo sentiment analysis](https://github.com/Avaiga/demo-sentiment-analysis) is the product of the Getting Started for Taipy GUI. The end result is a two-page application that uses a sentiment analysis model to analyze input and entire text.
+
+The first page analyzes the user input, while the second page lets the user choose a file to upload (a text). This text will be analyzed and the sentiments behind it will be displayed.
 
 
 ### Demo Type
