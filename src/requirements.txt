@@ -1,4 +1,2 @@
-taipy
-torch
-transformers
-scipy
+taipy==3.0
+requests
