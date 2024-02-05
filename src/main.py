@@ -89,7 +89,8 @@ def local_callback(state) -> None:
     notify(state, "Info", f"The text is: {state.text}", True)
     temp = state.dataframe.copy()
     scores = analyze_text(state.text)
-    state.dataframe = temp.append(scores, ignore_index=True)
+    temp.loc[len(temp)] = scores
+    state.dataframe = temp
     state.text = ""
 
 
@@ -131,8 +132,8 @@ def analyze_file(state) -> None:
         state.treatment = int((i + 1) * 100 / len(file_list))
         temp = state.dataframe2.copy()
         scores = analyze_text(input_text)
-        print(scores)
-        state.dataframe2 = temp.append(scores, ignore_index=True)
+        temp.loc[len(temp)] = scores
+        state.dataframe2 = temp
 
     state.path = None
 
