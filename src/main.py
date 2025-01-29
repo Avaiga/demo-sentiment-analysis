@@ -145,4 +145,4 @@ pages = {
 }
 
 
-Gui(pages=pages).run(title="Sentiment Analysis")
+Gui(pages=pages).run(title="Sentiment Analysis", dark_mode=True)
