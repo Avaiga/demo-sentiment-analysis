@@ -28,7 +28,7 @@ The first page analyzes the user input, while the second page lets the user choo
 
 ## How to run
 
-This demo works with a Python version superior to 3.8. Install the dependencies of the *requirements.txt* and run the *main.py*.
+This demo works with a Python version superior to 3.9. Install the dependencies of the *requirements.txt* and run the *main.py*.
 
 
 ## Directory Structure
